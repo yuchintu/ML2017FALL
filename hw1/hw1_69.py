@@ -21,7 +21,7 @@ for i in range(len(x)):
             x[i][j] = 0.0
 csvfile.close()
 
-weight = open('weight.txt', 'r')
+weight = open('weight69.txt', 'r')
 b = float(weight.readline())
 w = weight.read()
 w = w.split('[')
@@ -32,10 +32,10 @@ for i in range(len(w)):
 
 f = [] 
 for row in x:
-    if(row[1] == 'CO' or row[1] == 'NO' or row[1] == 'NO2' or row[1] == 'NOx' or row[1] == 'O3' or row[1] == 'PM10' or row[1] == 'PM2.5' or row[1] == 'SO2'):
+    if(row[1] == 'PM2.5'):
         f.append(row)
 
-datatype = int(8) 
+datatype = int(1) 
 X = []
 
 print(f[0])
@@ -46,7 +46,9 @@ for i in range(int(len(f) / datatype)):
     #print("t1: " + str(len(t)))
     for j in range(datatype):
         t += f[j + i * datatype][2:11]
-        #print("t2: " + str(len(t)))
+        for k in range(2, 11):
+            t.append(f[j + i * datatype][k]**2)
+    print("t2: " + str(len(t)))
     X.append(t)
 
 print(X[0])
@@ -58,8 +60,8 @@ for n in range(len(X)):
 data = OrderedDict()
 data['id'] = 'value'
 for row in X:
-    print(len(row))
-    y = b + np.dot(w, row[1:73])
+    #print(len(row))
+    y = b + np.dot(w, row[1:9*2 + 1])
     data[row[0]] = y
 
 '''

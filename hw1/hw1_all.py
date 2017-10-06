@@ -32,10 +32,10 @@ for i in range(len(w)):
 
 f = [] 
 for row in x:
-    if(row[1] == 'CO' or row[1] == 'NO' or row[1] == 'NO2' or row[1] == 'NOx' or row[1] == 'O3' or row[1] == 'PM10' or row[1] == 'PM2.5' or row[1] == 'SO2'):
+    if(row [1] == 'AMB_TEMP' or row[1] == 'CH4' or row[1] == 'NMHC' or row[1]== 'RAINFALL' or row[1] == 'THC' or row[1] == 'RH' or row[1] == 'WD_HR' or row[1] == 'WIND_DIREC' or row[1] == 'WIND_SPEED' or row[1] == 'WS_HR' or row[1] == 'CO' or row[1] == 'NO' or row[1] == 'NO2' or row[1] == 'NOx' or row[1] == 'O3' or row[1] == 'PM10' or row[1] == 'PM2.5' or row[1] == 'SO2'):
         f.append(row)
 
-datatype = int(8) 
+datatype = int(18) 
 X = []
 
 print(f[0])
@@ -59,7 +59,7 @@ data = OrderedDict()
 data['id'] = 'value'
 for row in X:
     print(len(row))
-    y = b + np.dot(w, row[1:73])
+    y = b + np.dot(w, row[1:(9 * datatype) + 1])
     data[row[0]] = y
 
 '''

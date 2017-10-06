@@ -32,10 +32,10 @@ for i in range(len(w)):
 
 f = [] 
 for row in x:
-    if(row[1] == 'CO' or row[1] == 'NO' or row[1] == 'NO2' or row[1] == 'NOx' or row[1] == 'O3' or row[1] == 'PM10' or row[1] == 'PM2.5' or row[1] == 'SO2'):
+    if(row[1] == 'PM2.5'):
         f.append(row)
 
-datatype = int(8) 
+datatype = int(1) 
 X = []
 
 print(f[0])
@@ -58,7 +58,7 @@ for n in range(len(X)):
 data = OrderedDict()
 data['id'] = 'value'
 for row in X:
-    print(len(row))
+    #print(len(row))
     y = b + np.dot(w, row[1:73])
     data[row[0]] = y
 

@@ -41,6 +41,8 @@ for row in range(len(f)):
 datatype = int(18)
 datalen = len(f[0])
 X = [] #input
+Y = [] #ground truth
+'''
 for n in range(int(len(f) / datatype)):
     tformix = []
     for i in range(datatype):
@@ -48,19 +50,37 @@ for n in range(int(len(f) / datatype)):
     for i in range(0, datalen - 10):
         tforX = []
         for j in range(datatype):
-            tforX += tformix[(i + j * datalen) : (i + j * datalen + 9)] 
+            tforX += tformix[(i + j * datalen) : (i + j * datalen + 5)] 
         X.append(tforX)
+'''
 
+d = []
+for i in range(datatype):
+    d.append([])
+    for n in range(len(f)):
+        if(n % datatype == i):
+            d[i] += f[n]
+
+for m in range(12):  #12 months
+    for h in range(475):  # 5 hours has 475 data
+        X.append([])
+        for t in range(18):
+            for s in range(5):
+                X[475*m + h].append(d[t][480*m + h + s])
+        Y.append(d[9][480*m + h + 5])
+
+'''
 Y = [] #ground truth
 for n in range(len(y)):
     for i in range(0, datalen - 10):
         Y.append(y[n][i + 9])
+'''
 print(len(Y))
 #y' = b + w1*x1 + w2*x2 + w3*x3 + w4*x4 + w5*x5 + w6*x6 + w7*x7 + w8*x8 + w9*x9
 #y' = b + w[1:9] * x[1:9]'
 
 b = 1.0 #initial b
-w = np.ones(len(X[0])) #initial w (w1,w2...,w9)
+w = np.ones(len(X[0])) #initial w (w1,w2...,w5)
 lr = 100 #initial learning rate
 iteration = 1000
 
@@ -104,7 +124,7 @@ for i in range(iteration):
     error = np.sqrt(error / len(X))
     print("i: " + str(i) + " error: " + str(error))
 
-outfile = open('weightall.txt','w')
+outfile = open('weightall5.txt','w')
 outfile.write(str(b) + '\n')
 outfile.write(str(w))
 outfile.close()

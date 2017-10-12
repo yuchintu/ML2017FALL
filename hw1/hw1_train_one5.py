@@ -27,12 +27,21 @@ for row in x:
         row.pop(0)
         row.pop(0)
         row.pop(0)
-        f.append(row)
+        f += row
 
-for row in range(len(f)):
-    for col in range(len(f[row])):
-        f[row][col] = float(f[row][col])
+for i in range(len(f)):
+    f[i] = float(f[i])
 
+X = [] #input
+Y = [] #ground truth
+for m in range(12):
+    for h in range(475):
+        X.append([])
+        for s in range(5):
+            X[475*m + h].append(f[480*m + h + s])
+        Y.append(f[480*m + h + 5])
+
+'''
 X = [] #input
 Y = [] #ground truth
 days = 10 #all = len(f)
@@ -40,17 +49,17 @@ for n in range(5,15):
     for i in range(0, len(f[n]) - 10):
         X.append(f[n][i:i+9])
         Y.append(f[n][i + 9])
-
+'''
 
 #y' = b + w1*x1 + w2*x2 + w3*x3 + w4*x4 + w5*x5 + w6*x6 + w7*x7 + w8*x8 + w9*x9
 #y' = b + w[1:9] * x[1:9]'
 
 b = 2.5 #initial b
-w = np.ones(len(X[0])) #initial w (w1,w2...,w9)
+w = np.ones(len(X[0])) #initial w (w1,w2...,w5)
 for i in range(len(w)):
     w[i] = 0.5
 lr = 100 #initial learning rate
-iteration = 50000
+iteration = 8000
 
 b_lr = 0.0
 w_lr = 0.0
@@ -93,7 +102,7 @@ for i in range(iteration):
     if(i % 100 == 0):
         print("i: " + str(i) + "error: " + str(error))
 
-outfile = open('weightone.txt','w')
+outfile = open('weightone5.txt','w')
 outfile.write(str(b) + '\n')
 outfile.write(str(w))
 outfile.close()

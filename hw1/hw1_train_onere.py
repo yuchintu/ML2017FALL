@@ -59,6 +59,9 @@ w_lr = 0.0
 b_history = [b]
 w_history = [w]
 
+#regularization
+l = 0.0001
+
 #Iteration
 for i in range(iteration):
     
@@ -69,7 +72,7 @@ for i in range(iteration):
         #print("wX: " + str(wX))
         b_grad = b_grad - 2.0*(float(Y[n]) - b - wX)*1.0
         for j in range(len(w_grad)):
-            w_grad[j] = w_grad[j] - 2.0*(float(Y[n]) - b - wX)*X[n][j]
+            w_grad[j] = w_grad[j] - 2.0*(float(Y[n]) - b - wX)*X[n][j] - (l * 2 * w[j])
     
     #print("bg: " + str(b_grad))
     #print("wg: " + str(w_grad[0]))
@@ -88,12 +91,12 @@ for i in range(iteration):
     error = 0
     for n in range(len(X)):
         wX = np.dot(w, X[n])
-        error += (Y[n] - (b + wX))**2
+        error += (Y[n] - (b + wX))**2 + l * np.dot(w, w)
     error = np.sqrt(error / len(X))
     if(i % 100 == 0):
         print("i: " + str(i) + "error: " + str(error))
 
-outfile = open('weightone.txt','w')
+outfile = open('weightonere.txt','w')
 outfile.write(str(b) + '\n')
 outfile.write(str(w))
 outfile.close()

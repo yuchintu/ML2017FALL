@@ -60,7 +60,7 @@ b_history = [b]
 w_history = [w]
 
 #regularization
-l = 0.0001
+l = 0.1
 
 #Iteration
 for i in range(iteration):
@@ -96,7 +96,7 @@ for i in range(iteration):
     if(i % 100 == 0):
         print("i: " + str(i) + "error: " + str(error))
 
-outfile = open('weightonere.txt','w')
+outfile = open('weightone1.txt','w')
 outfile.write(str(b) + '\n')
 outfile.write(str(w))
 outfile.close()

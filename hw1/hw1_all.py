@@ -21,7 +21,7 @@ for i in range(len(x)):
             x[i][j] = 0.0
 csvfile.close()
 
-weight = open('weight.txt', 'r')
+weight = open('weight1.txt', 'r')
 b = float(weight.readline())
 w = weight.read()
 w = w.split('[')

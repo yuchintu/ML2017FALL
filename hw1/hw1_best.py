@@ -44,7 +44,7 @@ for row in x:
 datatype = int(1) 
 X = []
 
-print(f[0])
+#print(f[0])
 for i in range(int(len(f) / datatype)):
     t = []
     t.append(f[i * datatype][0])

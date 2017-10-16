@@ -33,12 +33,13 @@ for i in range(len(x)):
     for j in range(6):
         if(x[i][j] > mx[j]):  
             mx[j] = x[i][j]
-        if(x[i][j] < mx[j]):
+        if(x[i][j] < mn[j]):
             mn[j] = x[i][j]
 
 for i in range(len(x)):
     for j in range(6):
         x[i][j] = (x[i][j] - mn[j]) / (mx[j] - mn[j])
+
 
 text = open('Y_train', 'r')
 text.readline()
@@ -51,6 +52,9 @@ for r in text:
 text.close()
 
 X = np.array(x)
+'''
+X[:, 0:6] = (X[:,0:6] - X[:, 0:6].min(axis=0)) / (X[:, 0:6].max(axis=0) - X[:, 0:6].min(axis=0))
+'''
 Y = np.array(y)
 
 
@@ -61,7 +65,7 @@ X = np.concatenate((np.ones((X.shape[0], 1)), X), axis=1)
 
 w = np.ones((X.shape[1], 1))
 
-iteration = 100000
+iteration = 20000
 lr = 10
 s_grad = np.zeros((w.shape[0], 1))
 
@@ -76,9 +80,17 @@ for i in range(iteration):
     lossp = loss
     
 
-np.save('model.npy', w) 
+np.save('model2W.npy', w) 
 
-print("done! loss: " + str(lossp))
+h = sigmoid(np.dot(X, w))
+for i in range(len(h)):
+    if h[i] > 0.5:
+        h[i] = 1
+    else:
+        h[i] = 0
+
+accuracy = sum(np.logical_not(np.logical_xor(Y, h))) / X.shape[0]
+print("done! loss: " + str(lossp) + " accuracy: " + str(accuracy))
 
 
 

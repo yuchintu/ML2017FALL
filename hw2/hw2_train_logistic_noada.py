@@ -17,6 +17,9 @@ for r in text:
     r = r[0].split(',')
     for i in range(len(r)):
         r[i] = float(r[i])
+    del r[102]
+    if r[2] == 0:
+        r[2] = -1.0
     x.append(r)
 
 text.close()
@@ -54,8 +57,8 @@ text.close()
 X = np.array(x)
 Y = np.array(y)
 
-X = (X - X.min(axis=0)) / (X.max(axis = 0) - X.min(axis = 0))
-
+X[:,0:3] = (X[:,0:3] - X[:,0:3].min(axis=0)) / (X[:,0:3].max(axis = 0) - X[:,0:3].min(axis = 0))
+X[:,4:6] = (X[:,4:6] - )
 #add bias
 X = np.concatenate((np.ones((X.shape[0], 1)), X), axis=1)
 
@@ -74,11 +77,11 @@ for i in range(iteration):
     grad = np.dot(X.transpose(), (h - Y))
     s_grad += grad**2
     ada = np.sqrt(s_grad)
-    w = w - lr * grad
+    w = w - lr * grad/ada
     lossp = loss
     
 
-np.save('model_noada.npy', w) 
+np.save('model_noada_delus.npy', w) 
 
 h = sigmoid(np.dot(X, w))
 for i in range(len(h)):
@@ -87,12 +90,8 @@ for i in range(len(h)):
     else:
         h[i] = 0
 
-accuracy = sum(not(Y xor h)) / X.shape[0]
+accuracy = sum(np.logical_not(np.logical_xor(Y, h))) / X.shape[0]
 print("done! loss: " + str(lossp) + "accuracy: " + str(accuracy))
-
-
-
-
 
 
 

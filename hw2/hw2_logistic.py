@@ -6,7 +6,7 @@ def sigmoid(z):
     return 1 / (1 + np.exp(-z))
 
 
-
+'''
 text = open('test.csv', 'r')
 c = csv.reader(text, delimiter=',')
 next(c)
@@ -63,7 +63,22 @@ for r in c:
     
     x.append(t)
 text.close()
+'''
 
+text = open('X_test', 'r')
+
+text.readline()
+
+x = []
+for r in text:
+    r = r.split('\n')
+    r = r[0].split(',')
+    for i in range(len(r)):
+        r[i] = float(r[i])
+    del r[102] #delete US
+    x.append(r)
+text.close()
+ 
 '''
 normalize
 '''
@@ -81,27 +96,32 @@ for i in range(len(x)):
     for j in range(6):
         x[i][j] = (x[i][j] - mn[j]) / (mx[j] - mn[j])
 
-w = np.load('model.npy')
+
+w = np.load('model_noada_delus.npy')
 print(w)
 X = np.array(x)
+'''
+X[:,0:6] = (X[:,0:6] - X[:,0:6].min(axis=0)) / (X[:,0:6].max(axis=0) - X[:,0:6].min(axis=0))
+'''
+#print(X[0])
+#print(X[1])
+
 X = np.concatenate((np.ones((X.shape[0],1)), X), axis = 1)
 
 ans = []
 
 for i in range(len(X)):
     ans.append([str(i+1)])
-    #h = sigmoid(np.dot(X[i], w))
-    h = np.dot(X[i], w)
-    '''
-    if(h[0] > 0.995):
-        h[0] = int(1)
+    h = sigmoid(np.dot(X[i], w))
+    #h = np.dot(X[i], w)
+    if(h[0] > 0.5):
+        h[0] = 1
     else:
-        h[0] = int(0)
-    '''
+        h[0] = 0
     ans[i].append(int(h[0]))
 
 
-filename = 'res.csv'
+filename = 'resnoadadelus.csv'
 text = open(filename, 'w+')
 s = csv.writer(text, delimiter=',', lineterminator='\n')
 s.writerow(['id','label'])

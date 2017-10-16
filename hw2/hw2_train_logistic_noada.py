@@ -26,7 +26,7 @@ normalize
 use
 (x - min) / (max - min)
 '''
-
+'''
 mx = x[0][0:6]
 mn = x[0][0:6]
 for i in range(len(x)):
@@ -39,6 +39,7 @@ for i in range(len(x)):
 for i in range(len(x)):
     for j in range(6):
         x[i][j] = (x[i][j] - mn[j]) / (mx[j] - mn[j])
+'''
 
 text = open('Y_train', 'r')
 text.readline()
@@ -53,6 +54,7 @@ text.close()
 X = np.array(x)
 Y = np.array(y)
 
+X = (X - X.min(axis=0)) / (X.max(axis = 0) - X.min(axis = 0))
 
 #add bias
 X = np.concatenate((np.ones((X.shape[0], 1)), X), axis=1)
@@ -61,7 +63,7 @@ X = np.concatenate((np.ones((X.shape[0], 1)), X), axis=1)
 
 w = np.ones((X.shape[1], 1))
 
-iteration = 100000
+iteration = 10000
 lr = 10
 s_grad = np.zeros((w.shape[0], 1))
 
@@ -72,13 +74,21 @@ for i in range(iteration):
     grad = np.dot(X.transpose(), (h - Y))
     s_grad += grad**2
     ada = np.sqrt(s_grad)
-    w = w - lr * grad/ada
+    w = w - lr * grad
     lossp = loss
     
 
-np.save('model.npy', w) 
+np.save('model_noada.npy', w) 
 
-print("done! loss: " + str(lossp))
+h = sigmoid(np.dot(X, w))
+for i in range(len(h)):
+    if h[i] > 0.5:
+        h[i] = 1
+    else:
+        h[i] = 0
+
+accuracy = sum(not(Y xor h)) / X.shape[0]
+print("done! loss: " + str(lossp) + "accuracy: " + str(accuracy))
 
 
 

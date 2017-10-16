@@ -82,6 +82,7 @@ for i in range(len(x)):
         x[i][j] = (x[i][j] - mn[j]) / (mx[j] - mn[j])
 
 w = np.load('model.npy')
+print(w)
 X = np.array(x)
 X = np.concatenate((np.ones((X.shape[0],1)), X), axis = 1)
 
@@ -89,11 +90,14 @@ ans = []
 
 for i in range(len(X)):
     ans.append([str(i+1)])
-    h = sigmoid(np.dot(X[i], w))
-    if(h[0] > 0.9):
+    #h = sigmoid(np.dot(X[i], w))
+    h = np.dot(X[i], w)
+    '''
+    if(h[0] > 0.995):
         h[0] = int(1)
     else:
         h[0] = int(0)
+    '''
     ans[i].append(int(h[0]))
 
 

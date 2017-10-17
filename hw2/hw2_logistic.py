@@ -97,7 +97,7 @@ for i in range(len(x)):
         x[i][j] = (x[i][j] - mn[j]) / (mx[j] - mn[j])
 
 
-w = np.load('model_noada_delus.npy')
+w = np.load('./model/' + 'model_noada_delus.npy')
 print(w)
 X = np.array(x)
 '''
@@ -121,7 +121,7 @@ for i in range(len(X)):
     ans[i].append(int(h[0]))
 
 
-filename = 'resnoadadelus.csv'
+filename = './res/' + 'resnoadadelus.csv'
 text = open(filename, 'w+')
 s = csv.writer(text, delimiter=',', lineterminator='\n')
 s.writerow(['id','label'])

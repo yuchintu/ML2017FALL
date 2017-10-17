@@ -18,8 +18,10 @@ for r in text:
     for i in range(len(r)):
         r[i] = float(r[i])
     del r[102]
+    '''
     if r[2] == 0:
         r[2] = -1.0
+    '''
     x.append(r)
 
 text.close()
@@ -56,9 +58,11 @@ text.close()
 
 X = np.array(x)
 Y = np.array(y)
-
-X[:,0:3] = (X[:,0:3] - X[:,0:3].min(axis=0)) / (X[:,0:3].max(axis = 0) - X[:,0:3].min(axis = 0))
-X[:,4:6] = (X[:,4:6] - )
+'''
+X[:,0:3] = (X[:,0:3] - X[:,0:3].min(axis = 0)) / (X[:,0:3].max(axis = 0) - X[:,0:3].min(axis = 0))
+X[:,4:6] = (X[:,4:6] - X[:,4:6].min(axis = 0)) / (X[:,4:6].max(axis = 0) - X[:, 4:6].min(axis = 0))
+'''
+X[:,0:5] = (X[:,0:5] - X[:,0:5].min(axis = 0)) / (X[:,0:5].max(axis = 0) - X[:,0:5].min(axis = 0))
 #add bias
 X = np.concatenate((np.ones((X.shape[0], 1)), X), axis=1)
 
@@ -66,11 +70,11 @@ X = np.concatenate((np.ones((X.shape[0], 1)), X), axis=1)
 
 w = np.ones((X.shape[1], 1))
 
-iteration = 10000
+iteration = 100000
 lr = 10
 s_grad = np.zeros((w.shape[0], 1))
 
-lossp = 0
+loss = 0
 for i in range(iteration):
     h = sigmoid(np.dot(X, w))
     loss = -(np.dot(Y.transpose(), np.log(h)) + np.dot((1 - Y).transpose(), np.log(1 - h)))
@@ -78,10 +82,10 @@ for i in range(iteration):
     s_grad += grad**2
     ada = np.sqrt(s_grad)
     w = w - lr * grad/ada
-    lossp = loss
     
 
-np.save('model_noada_delus.npy', w) 
+modelname = 'model_noada_delus'
+np.save('./model/' + modelname, w) 
 
 h = sigmoid(np.dot(X, w))
 for i in range(len(h)):
@@ -91,9 +95,16 @@ for i in range(len(h)):
         h[i] = 0
 
 accuracy = sum(np.logical_not(np.logical_xor(Y, h))) / X.shape[0]
-print("done! loss: " + str(lossp) + "accuracy: " + str(accuracy))
+print("done! loss: " + str(loss) + "accuracy: " + str(accuracy))
 
-
+record = open('record', 'a+')
+record.write('-----------------------------------------' + '\n')
+record.write('iteration: ' + str(iteration) + 'lr: ' + str(lr) + '\n')
+record.write('loss: ' + str(loss) + 'accuracy: ' + str(accuracy) + '\n')
+record.write('model name: ' + modelname + '\n')
+record.write('weight: ')
+record.write(np.array_str(np.transpose(w)) + '\n')
+record.close()
 
 
 

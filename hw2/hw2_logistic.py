@@ -75,6 +75,10 @@ for r in text:
     r = r[0].split(',')
     for i in range(len(r)):
         r[i] = float(r[i])
+    if r[2] == 1:
+        r[2] = 2
+    else:
+        r[2] = -2
     del r[102] #delete US
     x.append(r)
 text.close()
@@ -82,7 +86,7 @@ text.close()
 '''
 normalize
 '''
-
+'''
 mx = x[0][0:6]
 mn = x[0][0:6]
 for i in range(len(x)):
@@ -95,16 +99,15 @@ for i in range(len(x)):
 for i in range(len(x)):
     for j in range(6):
         x[i][j] = (x[i][j] - mn[j]) / (mx[j] - mn[j])
+'''
 
-
-w = np.load('./model/' + 'model_noada_delus.npy')
-print(w)
+w = np.load('./model/' + 'modelreenhansex.npy')
+print(len(w))
 X = np.array(x)
-'''
-X[:,0:6] = (X[:,0:6] - X[:,0:6].min(axis=0)) / (X[:,0:6].max(axis=0) - X[:,0:6].min(axis=0))
-'''
-#print(X[0])
-#print(X[1])
+
+X[:,0:2] = (X[:,0:2] - X[:,0:2].min(axis=0)) / (X[:,0:2].max(axis=0) - X[:,0:2].min(axis=0))
+X[:,3:6] = (X[:,3:6] - X[:,3:6].min(axis=0)) / (X[:,3:6].max(axis=0) - X[:,3:6].min(axis=0))
+
 
 X = np.concatenate((np.ones((X.shape[0],1)), X), axis = 1)
 
@@ -121,7 +124,7 @@ for i in range(len(X)):
     ans[i].append(int(h[0]))
 
 
-filename = './res/' + 'resnoadadelus.csv'
+filename = './res/' + 'resreensex.csv'
 text = open(filename, 'w+')
 s = csv.writer(text, delimiter=',', lineterminator='\n')
 s.writerow(['id','label'])

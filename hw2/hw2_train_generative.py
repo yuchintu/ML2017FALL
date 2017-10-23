@@ -1,5 +1,6 @@
 import csv
 import numpy as np
+import sys
 
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
@@ -11,7 +12,7 @@ def PxC(x, u, sigma):
 
 '''generative model'''
 
-text = open('X_train', 'r')
+text = open(sys.argv[1], 'r')
 text.readline()
 
 x = []
@@ -43,7 +44,7 @@ for i in range(len(x)):
     for j in range(6):
         x[i][j] = (x[i][j] - mn[j]) / (mx[j] - mn[j])
 
-text = open('Y_train', 'r')
+text = open(sys.argv[2], 'r')
 text.readline()
 
 y = []
@@ -75,7 +76,7 @@ sigma2 = np.matmul(np.transpose(C2 - u2), (C2 - u2))
 
 sigma = (len(C1) / (len(C1) + len(C2))) * sigma1 + (len(C2) / (len(C1) + len(C2))) * sigma2
 
-text = open('X_test', 'r')
+text = open(sys.argv[3], 'r')
 text.readline()
 
 x = []
@@ -120,13 +121,13 @@ ans = []
 for i in range(len(X)):
     ans.append([str(i+1)])
     h = sigmoid(np.matmul(w, np.transpose(X[i])) + b)
-    print(h)
+    #print(h)
     if h > 0.5:
         ans[i].append(1)
     else:
         ans[i].append(0)
 
-text = open('resgenerastic.csv', 'w')
+text = open(sys.argv[4], 'w')
 s = csv.writer(text, delimiter=',', lineterminator='\n')
 s.writerow(['id', 'label'])
 for i in range(len(ans)):

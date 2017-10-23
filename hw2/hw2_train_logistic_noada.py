@@ -3,7 +3,7 @@ import csv
 
 
 def sigmoid(z):
-    return 1/(1 + np.exp(-z))
+    return np.clip(1/(1 + np.exp(-z)), 0.00000000000001, 0.99999999999999)
 
 '''logistic regression'''
 
@@ -17,11 +17,7 @@ for r in text:
     r = r[0].split(',')
     for i in range(len(r)):
         r[i] = float(r[i])
-    del r[102]
-    '''
-    if r[2] == 0:
-        r[2] = -1.0
-    '''
+    
     x.append(r)
 
 text.close()
@@ -58,33 +54,42 @@ text.close()
 
 X = np.array(x)
 Y = np.array(y)
+
 '''
 X[:,0:3] = (X[:,0:3] - X[:,0:3].min(axis = 0)) / (X[:,0:3].max(axis = 0) - X[:,0:3].min(axis = 0))
 X[:,4:6] = (X[:,4:6] - X[:,4:6].min(axis = 0)) / (X[:,4:6].max(axis = 0) - X[:, 4:6].min(axis = 0))
 '''
-X[:,0:5] = (X[:,0:5] - X[:,0:5].min(axis = 0)) / (X[:,0:5].max(axis = 0) - X[:,0:5].min(axis = 0))
+'''
+X[:, 1:] = (X[:, 1:] - X[:, 1:].min(axis = 0)) / (X[:, 1:].max(axis = 0) - X[:, 1:].min(axis = 0))
+'''
+X = (X - X.min(axis=0)) / (X.max(axis = 0) - X.min(axis = 0))
+
+
 #add bias
 X = np.concatenate((np.ones((X.shape[0], 1)), X), axis=1)
+
 
 '''initial parameter '''
 
 w = np.ones((X.shape[1], 1))
 
-iteration = 100000
-lr = 10
+iteration = 14000
+lr = 0.0001
 s_grad = np.zeros((w.shape[0], 1))
+lda = 0.1
 
 loss = 0
 for i in range(iteration):
     h = sigmoid(np.dot(X, w))
     loss = -(np.dot(Y.transpose(), np.log(h)) + np.dot((1 - Y).transpose(), np.log(1 - h)))
     grad = np.dot(X.transpose(), (h - Y))
+    #grad[64:106] += 2 * lda * w[64:106]
     s_grad += grad**2
     ada = np.sqrt(s_grad)
-    w = w - lr * grad/ada
+    w = w - lr * grad
     
 
-modelname = 'model_noada_delus'
+modelname = 'model_noada_goodfeature'
 np.save('./model/' + modelname, w) 
 
 h = sigmoid(np.dot(X, w))

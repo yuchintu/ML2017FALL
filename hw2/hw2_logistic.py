@@ -1,6 +1,6 @@
 import csv
 import numpy as np
-
+import sys
 
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
@@ -65,7 +65,7 @@ for r in c:
 text.close()
 '''
 
-text = open('X_test', 'r')
+text = open(sys.argv[1], 'r')
 
 text.readline()
 
@@ -103,13 +103,14 @@ for i in range(len(x)):
         x[i][j] = (x[i][j] - mn[j]) / (mx[j] - mn[j])
 '''
 
-w = np.load('./model/' + 'modelreenhansex.npy')
-print(len(w))
+w = np.load('./model/' + 'modellogistic.npy')
+
 X = np.array(x)
 
-X[:,0:2] = (X[:,0:2] - X[:,0:2].min(axis=0)) / (X[:,0:2].max(axis=0) - X[:,0:2].min(axis=0))
+X[:,0:6] = (X[:,0:6] - X[:,0:6].min(axis=0)) / (X[:,0:6].max(axis=0) - X[:,0:6].min(axis=0))
+'''
 X[:,3:6] = (X[:,3:6] - X[:,3:6].min(axis=0)) / (X[:,3:6].max(axis=0) - X[:,3:6].min(axis=0))
-
+'''
 
 X = np.concatenate((np.ones((X.shape[0],1)), X), axis = 1)
 
@@ -126,7 +127,7 @@ for i in range(len(X)):
     ans[i].append(int(h[0]))
 
 
-filename = './res/' + 'resreensex.csv'
+filename = sys.argv[2]
 text = open(filename, 'w+')
 s = csv.writer(text, delimiter=',', lineterminator='\n')
 s.writerow(['id','label'])

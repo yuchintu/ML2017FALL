@@ -1,33 +1,6 @@
 #!/bin/bash
 
-python hw2_logistic.y $5 $6
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+python3 hw2_logistic.py $5 $6
 
 
 

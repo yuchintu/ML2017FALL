@@ -70,12 +70,12 @@ C1 = np.array(c1)
 C2 = np.array(c2)
 u1 = np.mean(C1, axis=0)
 u2 = np.mean(C2, axis=0)
-
-sigma1 = np.matmul(np.transpose(C1 - u1), (C1 - u1))
-sigma2 = np.matmul(np.transpose(C2 - u2), (C2 - u2))
+#print(C2)
+sigma1 = np.dot(np.transpose(C1 - u1), (C1 - u1)) / len(C1)
+sigma2 = np.dot(np.transpose(C2 - u2), (C2 - u2)) / len(C2)
 
 sigma = (len(C1) / (len(C1) + len(C2))) * sigma1 + (len(C2) / (len(C1) + len(C2))) * sigma2
-
+#print("1: " + str(sigma1) + "2: " + str(sigma2) + "3: " + str(sigma))
 text = open(sys.argv[3], 'r')
 text.readline()
 
@@ -115,7 +115,7 @@ for i in range(len(X)):
 
 
 w = np.matmul((u1 - u2), np.linalg.pinv(sigma))
-b = (-1/2)*np.matmul(np.matmul(np.transpose(u1), np.linalg.pinv(sigma1)),u1) + (1/2)*np.matmul(np.matmul(np.transpose(u2),np.linalg.pinv(sigma2)),u2) + np.log(len(C1)/len(C2))
+b = (-0.5)*np.dot(np.dot(u1, np.linalg.pinv(sigma)),np.transpose(u1)) + (0.5)*np.dot(np.dot(u2,np.linalg.pinv(sigma)),np.transpose(u2)) + np.log(len(C1)/len(C2))
 
 ans = []
 for i in range(len(X)):

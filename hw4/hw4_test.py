@@ -36,7 +36,7 @@ tokenizer = pickle.load(open('tokenizer.pkl', 'rb'))
 
 #idx_dict = pickle.load(open('index_dict.pkl','rb'))
 x = tokenizer.texts_to_sequences(x)
-x = sequence.pad_sequences(x, maxlen = 40)
+x = sequence.pad_sequences(x, maxlen = 50)
 '''
 t = ['today is a good day, but it is hot', 'today is hot, but it is a good day']
 t = tokenizer.texts_to_sequences(t)

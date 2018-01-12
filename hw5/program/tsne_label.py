@@ -8,7 +8,7 @@ print(train_id.shape)
 # get genres of each movieID in movies
 movie_id = pd.read_csv("movies.csv", sep = '::', engine = 'python')['movieID'].tolist()
 movie_genres = pd.read_csv("movies.csv", sep = '::', engine = 'python')['Genres'].str.split('|').str[-1].tolist()
-
+print(len(movie_genres))
 # to see how many genres there are
 '''
 genres = {'genres'}

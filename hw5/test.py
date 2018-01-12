@@ -32,18 +32,18 @@ for line in infile:
 user, movie = load_data(sys.argv[1])
 
 model = load_model('model_best.h5')
-#print(model.summary())
+print(model.summary())
 #movie_emb = np.array(model.layers[3].get_weights()).squeeze()
 #np.save('movie_emb.npy', movie_emb)
 result = model.predict([user,movie])
-
+'''
 #print(result)
 out = open(sys.argv[2], 'w')
 out.write('TestDataID,Rating\n')
 
 for i in range(len(result)):
     out.write(str(i+1) + ',' + str(result[i][0]) + '\n')
-
+'''
 
 
 

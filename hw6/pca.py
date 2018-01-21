@@ -45,6 +45,7 @@ def main():
         image.append(np.array(img).flatten())
 
     image = np.array(image).T    #270000 * 415
+    print(image)
     #image = image.reshape(415,600*600*3).transpose()
     #print(image.shape)
     
@@ -53,9 +54,13 @@ def main():
     #show(average)
 
     U, s, V = np.linalg.svd(image, full_matrices=False)
-    
+    s = np.sqrt(s)
+    sum_e = np.sum(s)
+    for nb in range(4):
+        XD = 'w'+str(nb+1)+'='
+        print(XD,s[nb] / sum_e) 
     eigenface = U[:,0:4]
-    
+    print(eigenface)    
     img = int(sys.argv[2].split('.')[0])
     projection = eigenface.T.dot(image[:, img] - average)
     recimg = eigenface.dot(projection) + average

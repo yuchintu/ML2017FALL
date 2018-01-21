@@ -1,0 +1,7 @@
+使用的套件:
+gensim Version: 3.2.0
+scikit-learn Version: 0.19.1
+jieba Version: 0.39
+
+script:
+bash final_test.sh <testing_data.csv path> <prediction file path>

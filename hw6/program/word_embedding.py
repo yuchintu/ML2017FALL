@@ -1,5 +1,6 @@
 import numpy as np
 import jieba
+import pickle
 from gensim.models.word2vec import Word2Vec
 from gensim.corpora.dictionary import Dictionary
 import re
@@ -31,7 +32,7 @@ def text_to_dict(text):
     return d
 
 def draw(vector, words):
-    vector = np.array(vector, dtype=np.float64).reshape(len(vector),150)
+    vector = np.array(vector, dtype=np.float64).reshape(len(vector), 96)
     vis_data = TSNE(n_components=2).fit_transform(vector)
     vis_x = vis_data[:,0]
     vis_y = vis_data[:,1]
@@ -46,7 +47,7 @@ def draw(vector, words):
     plt.show()
 
 def main():
-    text = read_data()
+    #text = read_data()
     '''
     dictionary = text_to_dict(text)
     #print(dictionary)
@@ -56,15 +57,20 @@ def main():
             words.append([word])
     print(len(words))
     '''
-    model = Word2Vec(text, size = 150, min_count=3000, window=5, iter = 20)
+    #model = Word2Vec(text, size = 100, min_count=3000, window=5, iter = 100)
     #print(model.wv.vocab.keys())
     #print(model)
-    
+    model = pickle.load(open('model_1', 'rb'))
+    count = 0    
     words = []
     vector = []
     for word in model.wv.vocab.keys():
         words.append(word)
         vector.append(model[word])
+        count += 1
+        print(count)
+        if count == 3000:
+            break
     #print(len(vector))
     draw(vector, words)
     

@@ -69,7 +69,7 @@ def main():
         vector.append(model[word])
         count += 1
         print(count)
-        if count == 3000:
+        if count == 200:
             break
     #print(len(vector))
     draw(vector, words)
